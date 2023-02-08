@@ -24,7 +24,7 @@ $sql = "CREATE TABLE `status` (
 $db->query($sql);
 
 $statuses = array(
-	"admin" => array("title" => "Клавомеханик", "color" => "rang"),
+	"admin" => array("title" => "Клавомеханик", "color" => ""),
 	"org" => array("title" => "Организатор" , "color" => "orange"),
 	"personal668817" => array("title" => "Титан", "color" => "#000000")
 );

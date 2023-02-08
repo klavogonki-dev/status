@@ -1,0 +1,49 @@
+﻿.rang1, a.rang1, a.rang1:visited
+{
+	color: #8d8d8d !important;
+	border-color: #8d8d8d !important;
+}
+.rang2, a.rang2, a.rang2:visited 
+{ 
+	color: #4f9a97 !important;
+	border-color: #4f9a97 !important;
+}
+.rang3, a.rang3, a.rang3:visited
+{
+	color: #187818 !important;
+	border-color: #187818 !important;
+}
+.rang4, a.rang4, a.rang4:visited
+{
+	color: #8c8100 !important;
+	border-color: #8c8100 !important;
+}
+.rang5, a.rang5, a.rang5:visited
+{
+	color: #ba5800 !important;
+	border-color: #ba5800 !important;
+}
+.rang6, a.rang6, a.rang6:visited
+{
+	color: #bc0143 !important;
+	border-color: #bc0143 !important;
+}
+.rang7, a.rang7, a.rang7:visited
+{
+	color: #5e0b9e !important;
+	border-color: #5e0b9e !important;
+}
+.rang8, a.rang8, a.rang8:visited
+{
+	color: #2e32ce !important;
+	border-color: #2e32ce !important;
+}
+.rang9, a.rang9, a.rang9:visited
+{
+	color: #061956 !important;
+	border-color: #061956 !important;
+}
+.statusPersonal, a.statusPersonal, a.statusPersonal:visited
+{
+	font-weight: bold;
+}
