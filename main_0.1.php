@@ -76,12 +76,12 @@ class db
 	public function query($sql, $user_id) //mock
 	{
 		return array(
-			474104 => array("status" => "Клавомеханик", "color" => "rang"),
-			668817 => array("status" => "Титан"       , "color" => "#000000"),
-			217625 => array("status" => "Мастер"      , "color" => "#bc0143"),
-			171789 => array("status" => "Организатор" , "color" => "orange"),
-			 73879 => array("status" => "Магнат"      , "color" => "goldenrod"),
-			211962 => array("status" => "Редактор"    , "color" => "royalblue")
+			474104 => array("status" => "Клавомеханик", "color" => "",          "weight" => ""),
+			668817 => array("status" => "Титан"       , "color" => "#000000",   "weight" => "bold"),
+			217625 => array("status" => "Мастер"      , "color" => "#bc0143",   "weight" => ""),
+			171789 => array("status" => "Организатор" , "color" => "orange",    "weight" => ""),
+			 73879 => array("status" => "Магнат"      , "color" => "goldenrod", "weight" => ""),
+			211962 => array("status" => "Редактор"    , "color" => "royalblue", "weight" => "")
 		)[$user_id];
 	}
 }

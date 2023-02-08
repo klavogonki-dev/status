@@ -1,5 +1,5 @@
 <?php
-	include("../../main.php");
+	include("../../main_0.1.php");
 ?>
 
 <!DOCTYPE html>
