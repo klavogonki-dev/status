@@ -1,5 +1,5 @@
 <?php
-	include("../../main_0.1.php");
+	include("../../main_0.2.php");
 	$post = (object)[];
 	$post->tier = $user->level;
 	$post->status = $user->id == 668817 ? 'Personal' : 'Normal';

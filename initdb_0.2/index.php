@@ -8,11 +8,11 @@ try {
 $db->query("CREATE DATABASE IF NOT EXISTS kgru");
 
 
-echo "todo: create table status: id | name | title | color <br>";
+echo "todo: create table status: id | name | title | color | customCSS <br>";
 $statuses = array(
 	"admin" => array("title" => "Клавомеханик"),
 	"org" => array("title" => "Организатор" , "color" => "orange"),
-	"personal668817" => array("title" => "Титан", "color" => "#000000", "weight" => "bold")
+	"personal668817" => array("title" => "Титан", "color" => "#000000", "customCSS" => "font-weight: bold")
 );
 echo "todo: load \$statuses to table status <br>";
 
