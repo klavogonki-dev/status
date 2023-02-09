@@ -8,11 +8,12 @@ try {
 $db->query("CREATE DATABASE IF NOT EXISTS kgru");
 
 
-echo "todo: create table status: id | name | title | color | customCSS <br>";
+echo "todo: create table status: id | name | title | color | customCSS | until <br>";
 $statuses = array(
 	"admin" => array("title" => "Клавомеханик"),
 	"org" => array("title" => "Организатор" , "color" => "orange"),
-	"personal668817" => array("title" => "Титан", "color" => "#000000", "customCSS" => "font-weight: bold")
+	"personal668817" => array("title" => "Титан", "color" => "#000000", "customCSS" => "font-weight: bold"),
+	"foolsday" => array("customCSS" => "transform:rotate(180deg)", "since" => 1680296400, "until" => 1680382800)
 );
 echo "todo: load \$statuses to table status <br>";
 
@@ -20,7 +21,8 @@ echo "todo: load \$statuses to table status <br>";
 echo "todo: create table userstatus: id | user_id | status <br>";
 $userstatuses = array(
 	"admin" => array(21, 82885, 123190, 474104),
-	"personal668817" => array(668817)
+	"personal668817" => array(668817),
+	"foolsday" => array(111)
 );
 echo "todo: load \$userstatuses to table userstatus <br>";
 

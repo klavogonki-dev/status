@@ -76,12 +76,13 @@ class db
 	public function query($sql, $user_id) //mock
 	{
 		return array(
-			474104 => array("status" => "Клавомеханик", "color" => "",          "customCSS" => ""),
-			668817 => array("status" => "Титан"       , "color" => "#000000",   "customCSS" => "font-weight: bold"),
-			217625 => array("status" => "Мастер"      , "color" => "#bc0143",   "customCSS" => ""),
-			171789 => array("status" => "Организатор" , "color" => "orange",    "customCSS" => ""),
-			 73879 => array("status" => "Магнат"      , "color" => "goldenrod", "customCSS" => ""),
-			211962 => array("status" => "Редактор"    , "color" => "royalblue", "customCSS" => "")
+			474104 => array("status" => "Клавомеханик", "color" => "",          "customCSS" => ""                        , "since" => 0         , "until" => 0),
+			668817 => array("status" => "Титан"       , "color" => "#000000",   "customCSS" => "font-weight: bold"       , "since" => 0         , "until" => 0),
+			217625 => array("status" => "Мастер"      , "color" => "#bc0143",   "customCSS" => ""                        , "since" => 0         , "until" => 0),
+			171789 => array("status" => "Организатор" , "color" => "orange",    "customCSS" => ""                        , "since" => 0         , "until" => 0),
+			 73879 => array("status" => "Магнат"      , "color" => "goldenrod", "customCSS" => ""                        , "since" => 0         , "until" => 0),
+			211962 => array("status" => "Редактор"    , "color" => "royalblue", "customCSS" => ""                        , "since" => 0         , "until" => 0),
+			   111 => array("status" => ""            , "color" => "",          "customCSS" => "transform:rotate(180deg)", "since" => 1680296400, "until" => 1680382800)
 		)[$user_id];
 	}
 }
