@@ -12,7 +12,7 @@ switch ($_POST['action']) {
 		break;
 
 	case 'viewuserstatuses':
-		$res = $db->query("SELECT us.id, us.user_id, s.name, s.title, s.color FROM userstatus as us, status as s where us.status_id = s.id");
+		$res = $db->query("SELECT us.id, us.user_id, s.name, s.title, s.color, s.customCSS FROM userstatus as us, status as s where us.status_id = s.id");
 		while ($row = $res->fetch_assoc()) {
 			echo json_encode($row).'<br>';
 		}
