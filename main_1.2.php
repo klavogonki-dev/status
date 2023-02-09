@@ -20,7 +20,7 @@ class uinfo
 	public $id;
 	public $best_speed;
 	public $level;
-	public $titleData;
+	public $statusData;
 	public $status;
 	public $title;
 	public $style;
@@ -36,7 +36,7 @@ class uinfo
 				break;
 
 			case 'statusData':
-				$this->titleData = $this->getStatusDataFromDb();
+				$this->statusData = $this->getStatusDataFromDb();
 				break;
 
 			case 'status':
@@ -86,31 +86,68 @@ class uinfo
 	
 	public function getStatusDataFromDb()
 	{
-		$sql = "SELECT title, color from status as s, userstatus as us where us.user_id=? and us.status_id=s.id";
+		$sql = "SELECT title, color, customCSS from status as s, userstatus as us where us.user_id=? and us.status_id=s.id";
 		$stmt = $this->db->prepare($sql);
 		$stmt->bind_param("d", $this->id);
 		$stmt->execute();
 		$rs = $stmt->get_result();
 		$row = $rs->fetch_assoc();
 
+		//TODO: filter each value, acquired from DB (if needed)
+//		if ($row) {
+//			$row = $this->filterData($row);
+//		}
+
 		return ($row) ? $row : false;
 	}
 
 	public function getStatus()
 	{
-		return ($this->titleData) ? "Personal" : "Normal";
+		return ($this->statusData) ? "Personal" : "Normal";
 	}
 
 	public function getTitle()
 	{
-		return ($this->titleData) ? $this->titleData['title'] : $this->getRank();
+		return ($this->statusData && $this->statusData['title']) ? $this->statusData['title'] : $this->getRank();
 	}
 
 	public function getStyle()
 	{
-		//style="color: #rrggbb !important; border-color: #rrggbb !important"
-		return ($this->titleData && $this->titleData['color']) ? "color:{$this->titleData['color']} !important; border-color:{$this->titleData['color']} !important" : "";
+		//style="color: #rrggbb !important; border-color: #rrggbb !important; {$customCSS}"
+		if (!$this->statusData) return "";
+
+		$styles = array();
+		if ($this->statusData['color'])
+		{
+			$styles[] = "color:{$this->statusData['color']} !important";
+			$styles[] = "border-color:{$this->statusData['color']} !important";
+		}
+
+		if ($this->statusData['customCSS'])
+		{
+			$styles[] = "{$this->statusData['customCSS']}";
+		}
+
+		return (!empty($styles)) ? implode('; ', $styles) : "";
 	}
+
+/*
+	public function filterData($data)
+	{
+		$rv = array();
+		foreach ($data as $key=>$value)
+		{
+			//check and filter $value, if needed:
+
+			//TODO: implement filtering here
+
+			//return filtered value:
+			$rv[$key] = $value;
+		}
+
+		return $rv;
+	}
+*/
 }
 
 ?>

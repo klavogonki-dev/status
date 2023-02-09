@@ -1,5 +1,5 @@
 <?php
-	include("../../main_1.1.php");
+	include("../../main_1.2.php");
 	$post = (object)[];
 	$post->tier = $user->level;
 	$post->status = $user->status;
@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="../../main_1.css">
+	<link rel="stylesheet" href="../../main_1.1.css">
 </head>
 <body>
 

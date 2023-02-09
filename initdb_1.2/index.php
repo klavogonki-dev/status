@@ -10,7 +10,7 @@ $db->query("CREATE DATABASE IF NOT EXISTS kgru");
 
 $db->query("USE kgru");
 
-echo "creating table status: id | name | title | color <br>";
+echo "creating table status: id | name | title | color | customCSS <br>";
 $db->query("DROP TABLE IF EXISTS `status`");
 
 $sql = "CREATE TABLE `status` (
@@ -18,15 +18,18 @@ $sql = "CREATE TABLE `status` (
   `name` varchar(16) DEFAULT NULL,
   `title` varchar(16) DEFAULT NULL,
   `color` varchar(16) DEFAULT '#000000',
+  `customCSS` tinytext DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;";	//TODO: change DB ENGINE / CHARSET if needed
 
 $db->query($sql);
 
 $statuses = array(
-	"admin" => array("title" => "Клавомеханик", "color" => ""),
+	"admin" => array("title" => "Клавомеханик"),
 	"org" => array("title" => "Организатор" , "color" => "orange"),
-	"personal668817" => array("title" => "Титан", "color" => "#000000")
+	"personal668817" => array("title" => "Титан", "color" => "#000000", "customCSS" => "font-weight: bold"),
+	"personal111001" => array("customCSS" => "font-weight: bold; text-decoration: line-through"),
+	"personal191670" => array("customCSS" => "transform:rotate(180deg);")
 );
 
 $statuses_id = array();
@@ -35,10 +38,10 @@ echo "loading \$statuses to table status <br>";
 
 foreach ($statuses as $name=>$data)
 {
-	$sql = "INSERT INTO `status` (name, title, color) VALUES (?, ?, ?)";
+	$sql = "INSERT INTO `status` (name, title, color, customCSS) VALUES (?, ?, ?, ?)";
 	$stmt = $db->prepare($sql);
 	if ($stmt) {
-		$stmt->bind_param("sss", $name, $data['title'], $data['color']);
+		$stmt->bind_param("ssss", $name, $data['title'], $data['color'], $data['customCSS']);
 		$stmt->execute();
 
 		$statuses_id[$name] = $db->insert_id;
@@ -64,7 +67,9 @@ $db->query($sql);
 $userstatuses = array(
 	"admin" => array(21, 82885, 123190, 474104),
 	"org" => array(233444, 261337, 405687, 572711),
-	"personal668817" => array(668817)
+	"personal668817" => array(668817),
+	"personal111001" => array(111001),
+	"personal191670" => array(191670)
 );
 echo "loading \$userstatuses to table userstatus <br>";
 
