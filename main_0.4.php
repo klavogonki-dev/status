@@ -76,13 +76,13 @@ class db
 	public function query($sql, $user_id) //mock
 	{
 		return array(
-			474104 => array("status" => "Клавомеханик", "color" => "",          "customCSS" => ""                        , "since" => 0         , "until" => 0),
-			668817 => array("status" => "Титан"       , "color" => "#000000",   "customCSS" => "font-weight: bold"       , "since" => 0         , "until" => 0),
-			217625 => array("status" => "Мастер"      , "color" => "#bc0143",   "customCSS" => ""                        , "since" => 0         , "until" => 0),
-			171789 => array("status" => "Организатор" , "color" => "orange",    "customCSS" => ""                        , "since" => 0         , "until" => 0),
-			 73879 => array("status" => "Магнат"      , "color" => "goldenrod", "customCSS" => ""                        , "since" => 0         , "until" => 0),
-			211962 => array("status" => "Редактор"    , "color" => "royalblue", "customCSS" => ""                        , "since" => 0         , "until" => 0),
-			   111 => array("status" => ""            , "color" => "",          "customCSS" => "transform:rotate(180deg)", "since" => 1680296400, "until" => 1680382800)
+			474104 => array("status" => "Клавомеханик", "color" => "",          "customCSS" => "", "since" => 0, "until" => 0, "enabled" => 1, "ranglink" => "", "accesses" => "", "icon" => ""),
+			668817 => array("status" => "Титан"       , "color" => "#000000",   "customCSS" => "font-weight: bold", "since" => 0, "until" => 0, "enabled" => 1, "ranglink" => "", "accesses" => "", "icon" => ""),
+			217625 => array("status" => "Мастер"      , "color" => "#bc0143",   "customCSS" => "", "since" => 0, "until" => 0, "enabled" => 1, "ranglink" => "Маньяк", "accesses" => "", "icon" => ""),
+			171789 => array("status" => "Организатор" , "color" => "orange",    "customCSS" => "", "since" => 0, "until" => 0, "enabled" => 1, "ranglink" => "", "accesses" => "view_stat,create_compn,allow_msg", "icon" => ""),
+			 73879 => array("status" => "VIP"         , "color" => "goldenrod", "customCSS" => "", "since" => 0, "until" => 0, "enabled" => 1, "ranglink" => "", "accesses" => "", "icon" => "https://klavogonki.ru/storage/avatars/144370.png"),
+			211962 => array("status" => "Редактор"    , "color" => "royalblue", "customCSS" => "", "since" => 0, "until" => 0, "enabled" => 1, "ranglink" => "", "accesses" => "", "icon" => ""),
+			   111 => array("status" => ""            , "color" => "",          "customCSS" => "transform:rotate(180deg)", "since" => 1680296400, "until" => 1680382800, "enabled" => 1, "ranglink" => "", "accesses" => "", "icon" => "")
 		)[$user_id];
 	}
 }

@@ -1,5 +1,5 @@
 <?php
-	include("../../main_0.3.php");	
+	include("../../main_0.4.php");	
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +24,7 @@
 <div ng-controller="controller">
 	<div class="profile-container container">
 		<div class="profile-header">
-			<img src="http://klavogonki.ru/storage/avatars/123190_big.png" style="height: 60px; width: 60px;">
+			<img src="https://klavogonki.ru/storage/avatars/{{data.summary.id}}_big.png" style="height: 60px; width: 60px;">
 			<div class="rang{{data.summary.level}} status{{data.summary.status}} title">{{data.summary.title}}</div>
 			<div class="username"><span class="name" style="font-size: 30px;">{{data.summary.user.login}}</span></div>
 		</div>
