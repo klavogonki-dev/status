@@ -13,20 +13,23 @@ if ($db->connect_error) {
 
 $db->query('CREATE DATABASE IF NOT EXISTS kgru');
 $db->query('USE kgru');
-
-echo 'creating table status: id | name | title | color | customCSS <br>';
+$db->query('DROP TABLE IF EXISTS `userstatus`');
 $db->query('DROP TABLE IF EXISTS `status`');
 
+echo 'creating table status: id | name | title | color | customCSS <br>';
+
 $sql = "CREATE TABLE `status` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(16) DEFAULT NULL,
+  `id` int(11) KEY AUTO_INCREMENT,
+  `name` varchar(16) UNIQUE DEFAULT NULL,
   `title` varchar(16) DEFAULT NULL,
   `color` varchar(16) DEFAULT '#000000',
-  `customCSS` tinytext DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `customCSS` tinytext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;"; // TODO: change DB ENGINE / CHARSET if needed
 
-$db->query($sql);
+if ($db->query($sql) === false) {
+    error_log('Create table "status" error: ' . $db->error);
+    die('Create table "status" error. See log for details.');
+}
 
 $statuses = array(
     'admin' => array('title' => 'Клавомеханик'),
@@ -50,36 +53,43 @@ if ($stmt === false) {
 
 foreach ($statuses as $name => $data) {
     $stmt->bind_param('ssss', $name, $data['title'], $data['color'], $data['customCSS']);
-    $stmt->execute();
+
+    if (!$stmt->execute()) {
+        error_log('SQL execute error: ' . $db->error);
+        die('SQL execute error. See log for details.');
+    }
+
     $statuses_id[$name] = $db->insert_id;
 }
 
 echo 'creating table userstatus: id | user_id | status_id | since | until <br>';
 
-$db->query('DROP TABLE IF EXISTS `userstatus`');
-
 $sql = 'CREATE TABLE `userstatus` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT 0,
+  `id` int(11) KEY AUTO_INCREMENT,
+  `user_id` int(11) UNIQUE DEFAULT 0,
   `status_id` int(11) DEFAULT 0,
-  `since` timestamp DEFAULT NULL, 
-  `until` timestamp DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `since` datetime DEFAULT NULL, 
+  `until` datetime DEFAULT NULL,
+  `enabled` bool DEFAULT 1,
+  FOREIGN KEY (`status_id`) REFERENCES `status` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;'; // TODO: change DB ENGINE / CHARSET if needed
 
-$db->query($sql);
+if ($db->query($sql) === false) {
+    error_log('Create table "userstatus" error: ' . $db->error);
+    die('Create table "userstatus" error. See log for details.');
+}
 
 $user_statuses = array(
     'admin' => array('ids' => array(21, 82885, 123190, 474104)),
     'org' => array('ids' => array(233444, 261337, 405687, 572711)),
     'personal668817' => array('ids' => array(668817)),
     'personal111001' => array('ids' => array(111001)),
-    'foolsday' => array('ids' => array(111), 'since' => 1680296400, 'until' => 1680382800)
+    'foolsday' => array('ids' => array(111), 'since' => '2023-04-01 00:00:00', 'until' => '2023-04-02 00:00:00')
 );
 
 echo 'loading $user_statuses to table userstatus <br>';
 
-$sql = 'INSERT INTO `userstatus` (user_id, status_id, since, until) VALUES (?, ?, FROM_UNIXTIME(?), FROM_UNIXTIME(?))';
+$sql = 'INSERT INTO `userstatus` (user_id, status_id, since, until) VALUES (?, ?, ?, ?)';
 $stmt = $db->prepare($sql);
 
 if ($stmt === false) {
@@ -89,8 +99,12 @@ if ($stmt === false) {
 
 foreach ($user_statuses as $name => $data) {
     foreach ($data['ids'] as $user_id) {
-        $stmt->bind_param('iiii', $user_id, $statuses_id[$name], $data['since'], $data['until']);
-        $stmt->execute();
+        $stmt->bind_param('iiss', $user_id, $statuses_id[$name], $data['since'], $data['until']);
+
+        if (!$stmt->execute()) {
+            error_log('SQL execute error: ' . $db->error);
+            die('SQL execute error. See log for details.');
+        }
     }
 }
 

@@ -31,9 +31,15 @@
     <input type="text" name="action" hidden value="updateuserstatus">
     <input type="text" name="user_id" placeholder="id игрока" required>
     <input type="text" name="codename" placeholder="code name" required>
-    <input type="text" name="since" placeholder="действие с">
-    <input type="text" name="until" placeholder="действие до">
+    <input type="datetime-local" name="since" placeholder="действие с">
+    <input type="datetime-local" name="until" placeholder="действие до">
     <button type="submit">Присвоить/изменить статус игрока</button>
+</form>
+* Время указывается в московском часовом поясе
+<form action="crud.php" method="POST">
+    <input type="text" name="action" hidden value="switchuserstatusenabled">
+    <input type="text" name="user_id" placeholder="id игрока" required>
+    <button type="submit">Активировать/деактивировать присвоенный статус</button>
 </form>
 <form action="crud.php" method="POST">
     <input type="text" name="action" hidden value="deleteuserstatus">
