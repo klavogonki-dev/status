@@ -1,11 +1,11 @@
 <?php
-	include("../../main_1.2.php");
+	include("../../main_1.3.php");
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="../../main_1.1.css">
+	<link rel="stylesheet" href="../../main_1.2.css">
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js" type="text/javascript"></script>
 	<style>
 		.nick_content a {

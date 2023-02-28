@@ -47,3 +47,7 @@
 {
 	//nothing here, maybe reserved for future use
 }
+
+.status-icon, .profile-header .status-icon {
+	width: 13px;
+}

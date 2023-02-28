@@ -1,11 +1,11 @@
 <?php
-	include("../../main_1.2.php");	
+	include("../../main_1.3.php");	
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="../../main_1.1.css">
+	<link rel="stylesheet" href="../../main_1.2.css">
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js" type="text/javascript"></script>
 	<style>
 		.title {
@@ -25,7 +25,7 @@
 	<div class="profile-container container">
 		<div class="profile-header">
 			<img src="http://klavogonki.ru/storage/avatars/{{data.summary.id}}_big.png" style="height: 60px; width: 60px;">
-			<div class="rang{{data.summary.level}} status{{data.summary.status}} title" style="{{data.summary.style}}">{{data.summary.title}}</div>
+			<div class="rang{{data.summary.level}} status{{data.summary.status}} title" style="{{data.summary.style}}"><img class="status-icon" src="{{data.summary.statusIcon}}" />{{data.summary.title}}</div>
 			<div class="username"><span class="name" style="font-size: 30px;">{{data.summary.user.login}}</span></div>
 		</div>
 	</div>
@@ -39,6 +39,7 @@
 			status: '<?=$user->status;?>',
 			title: '<?=$user->title;?>',
 			style: '<?=$user->style;?>',
+			statusIcon: '<?=$user->statusIcon;?>',
 			user: {login: 'user<?=$user->id;?>'}
 		}};
 	}

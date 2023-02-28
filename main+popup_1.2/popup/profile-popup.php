@@ -1,11 +1,11 @@
 <?php
-	include("../../main_1.2.php");
+	include("../../main_1.3.php");
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="../../main_1.1.css">
+	<link rel="stylesheet" href="../../main_1.2.css">
 </head>
 <body>
 
@@ -16,7 +16,7 @@
 		<img src="http://klavogonki.ru/storage/avatars/<?=$user->id;?>_big.png">
 		</div>
 	</th>	
-	<td><div class="rang<?=$user->level;?> status<?=$user->status;?>" style="<?=$user->style;?>"><?=$user->title;?></div>
+	<td><div class="rang<?=$user->level;?> status<?=$user->status;?>" style="<?=$user->style;?>"><img class="status-icon" src="<?=$user->statusIcon;?>"><?=$user->title;?></div>
 		<div class="name">user<?=$user->id;?></div>
 	</td>
 	</tr>

@@ -14,6 +14,7 @@ $user->getKey('statusData');
 $user->getKey('status');
 $user->getKey('title');
 $user->getKey('style');
+$user->getKey('statusIcon');
 
 class uinfo
 {
@@ -21,6 +22,7 @@ class uinfo
 	public $best_speed;
 	public $level;
 	public $statusData;
+	public $statusIcon;
 	public $status;
 	public $title;
 	public $style;
@@ -37,6 +39,10 @@ class uinfo
 
 			case 'statusData':
 				$this->statusData = $this->getStatusDataFromDb();
+				break;
+
+			case 'statusIcon':
+				$this->statusIcon = $this->getStatusIcon();
 				break;
 
 			case 'status':
@@ -86,9 +92,11 @@ class uinfo
 	
 	public function getStatusDataFromDb()
 	{
-		$sql = "SELECT title, color, customCSS from status as s, userstatus as us where us.user_id=? and us.status_id=s.id";
+		$sql = "SELECT title, color, customCSS, accesses, icon from status as s, userstatus as us where us.user_id in (?, ?) and us.status_id=s.id and us.enabled=true and (since is null or since<=NOW()) and (until is null or NOW()<=until) order by field (us.user_id, ?, ?) limit 1";
+		$all_users_magic_id = 111;	//TODO: maybe it should be set in some kind of config?
+
 		$stmt = $this->db->prepare($sql);
-		$stmt->bind_param("d", $this->id);
+		$stmt->bind_param("dddd", $this->id, $all_users_magic_id, $this->id, $all_users_magic_id);
 		$stmt->execute();
 		$rs = $stmt->get_result();
 		$row = $rs->fetch_assoc();
@@ -99,6 +107,11 @@ class uinfo
 //		}
 
 		return ($row) ? $row : false;
+	}
+
+	public function getStatusIcon()
+	{
+		return ($this->statusData) ? $this->statusData['icon'] : "";
 	}
 
 	public function getStatus()

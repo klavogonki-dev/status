@@ -1,17 +1,18 @@
 <?php
-	include("../../main_1.2.php");
+	include("../../main_1.3.php");
 	$post = (object)[];
 	$post->tier = $user->level;
 	$post->status = $user->status;
+	$post->statusIcon = ($user->statusIcon) ? "<img class=\"status-icon\" src=\"{$user->statusIcon}\"/>" : "";
 	$post->style = $user->style;
-	$post->rang = $user->title;
+	$post->rang = $post->statusIcon . $user->title;
 	$post->stats = "Рекорд: {$user->best_speed} зн/мин";
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="../../main_1.1.css">
+	<link rel="stylesheet" href="../../main_1.2.css">
 </head>
 <body>
 
