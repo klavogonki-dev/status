@@ -1,10 +1,10 @@
 <?php
 
-require_once('db_3_b1.php');
+require_once('db_3.1_b1.php');
 
 $user = new uinfo();
 
-$user->db = $db; //TODO: remove if not needed here and change corresponding code on query execute
+$user->db = $db; // TODO: remove if not needed here and change corresponding code on query execute
 
 $user->id = (int)$_POST['user_id'];
 $user->best_speed = (int)$_POST['record'];
@@ -14,6 +14,7 @@ $user->getKey('statusData');
 $user->getKey('status');
 $user->getKey('title');
 $user->getKey('style');
+$user->getKey('statusIcon');
 
 class uinfo
 {
@@ -21,6 +22,7 @@ class uinfo
     public $best_speed;
     public $level;
     public $statusData;
+    public $statusIcon;
     public $status;
     public $title;
     public $style;
@@ -36,6 +38,10 @@ class uinfo
 
             case 'statusData':
                 $this->statusData = $this->getStatusDataFromDb();
+                break;
+
+            case 'statusIcon':
+                $this->statusIcon = $this->getStatusIcon();
                 break;
 
             case 'status':
@@ -91,31 +97,20 @@ class uinfo
 
     public function getStatusDataFromDb()
     {
-        date_default_timezone_set('Europe/Moscow');
-        $now = strtotime('now');
-
-        $sql = 'SELECT title, color, customCSS, since, until, enabled from status as s, userstatus as us where us.user_id = ? and us.status_id = s.id';
+        $sql = 'SELECT title, color, customCSS, accesses, icon FROM status AS s, userstatus AS us WHERE us.user_id IN (?, ?) AND us.status_id = s.id AND us.enabled = true AND (since IS null OR since<=NOW()) AND (until IS null OR NOW()<=until) ORDER BY FIELD(us.user_id, ?, ?) LIMIT 1';
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param('i', $this->id);
+        $all_users_magic_id = 111;
+        $stmt->bind_param('iiii', $this->id, $all_users_magic_id, $this->id, $all_users_magic_id);
         $stmt->execute();
         $rs = $stmt->get_result();
         $row = $rs->fetch_assoc();
 
-        if ($row and $row['enabled'] === 1 and ($row['until'] === null or strtotime($row['since']) <= $now and $now <= strtotime($row['until']))) {
-            return $row;
-        }
+        return $row ?: false;
+    }
 
-        $id_all = 111;
-        $stmt->bind_param('i', $id_all);
-        $stmt->execute();
-        $rs = $stmt->get_result();
-        $row = $rs->fetch_assoc();
-
-        if ($row and $row['enabled'] === 1 and ($row['until'] === null or strtotime($row['since']) <= $now and $now <= strtotime($row['until']))) {
-            return $row;
-        }
-
-        return false;
+    public function getStatusIcon()
+    {
+        return ($this->statusData) ? $this->statusData['icon'] : '';
     }
 
     public function getStatus()

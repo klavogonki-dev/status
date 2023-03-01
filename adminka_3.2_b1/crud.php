@@ -1,7 +1,7 @@
 <?php
 
 // after initdb
-require_once('../db_3_b1.php');
+require_once('../db_3.1_b1.php');
 
 switch ($_POST['action']) {
     case 'viewstatuses':
@@ -13,7 +13,14 @@ switch ($_POST['action']) {
 
         break;
     case 'updatestatus':
-        $sql = 'INSERT INTO `status` (name, title, color, customCSS) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE title = ?, color = ?, customCSS = ?';
+        if ($_POST['icon']) {
+            $icon = 'data:image/png;base64,' . base64_encode(file_get_contents($_POST['icon']));
+        }
+        else {
+            $icon = null;
+        }
+
+        $sql = 'INSERT INTO `status` (name, title, color, customCSS, accesses, icon) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE title = ?, color = ?, customCSS = ?, accesses = ?, icon = ?';
         $stmt = $db->prepare($sql);
 
         if ($stmt === false) {
@@ -21,7 +28,7 @@ switch ($_POST['action']) {
             die('SQL updatestatus prepare error. See log for details.');
         }
 
-        $stmt->bind_param('sssssss', $_POST['codename'], $_POST['title'], $_POST['color'], $_POST['customCSS'], $_POST['title'], $_POST['color'], $_POST['customCSS']);
+        $stmt->bind_param('sssssssssss', $_POST['codename'], $_POST['title'], $_POST['color'], $_POST['customCSS'], $_POST['accesses'], $icon, $_POST['title'], $_POST['color'], $_POST['customCSS'], $_POST['accesses'], $icon);
 
         if ($stmt->execute()) {
             echo 'Update status success';
@@ -167,6 +174,14 @@ switch ($_POST['action']) {
         else {
             error_log('Delete user status fail: ' . $db->error);
             echo 'Delete user status fail. See log for details.';
+        }
+
+        break;
+    case 'viewuseraccesses':
+        $res = $db->query('SELECT * FROM `useraccesses`');
+
+        while ($row = $res->fetch_assoc()) {
+            echo json_encode($row, JSON_UNESCAPED_UNICODE) . '<br>';
         }
 
         break;

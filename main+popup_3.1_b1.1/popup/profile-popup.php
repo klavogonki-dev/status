@@ -1,11 +1,11 @@
 <?php
-require_once('../../main_3_b1.2.php');
+require_once('../../main_3.1_b1.2.php');
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="../../main_1.1.css">
+    <link rel="stylesheet" href="../../main_1.2.css">
 </head>
 <body>
 
@@ -19,7 +19,8 @@ require_once('../../main_3_b1.2.php');
             </th>
             <td>
                 <div class="rang<?= $user->level; ?> status<?= $user->status; ?>"
-                     style="<?= $user->style; ?>"><?= $user->title; ?></div>
+                     style="<?= $user->style; ?>">
+                    <img class="status-icon" src="<?=$user->statusIcon;?>"><?= $user->title; ?></div>
                 <div class="name">user<?= $user->id; ?></div>
             </td>
         </tr>

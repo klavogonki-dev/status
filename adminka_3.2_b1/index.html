@@ -15,6 +15,8 @@
     <input type="text" name="title" placeholder="отображаемое имя">
     <input type="text" name="color" placeholder="название или код цвета">
     <input type="text" name="customCSS" placeholder="пользовательский CSS">
+    <input  type="text" name="accesses" placeholder="права">
+    <input  type="text" name="icon" placeholder="src иконки">
     <button type="submit">Добавить/изменить статус</button>
 </form>
 <form action="crud.php" method="POST">
@@ -46,5 +48,11 @@
     <input type="text" name="user_id" placeholder="id игрока" required>
     <button type="submit">Удалить присвоенный статус</button>
 </form>
+<hr>
+<form action="crud.php" method="POST">
+    <input type="text" name="action" hidden value="viewuseraccesses">
+    <button type="submit">Посмотреть все присвоенные права</button>
+</form>
+
 </body>
 </html>

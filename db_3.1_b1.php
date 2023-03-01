@@ -10,3 +10,5 @@ if ($db->connect_error) {
     error_log('DB connection error: ' . $db->connect_error);
     die('DB connection error. See log for details.');
 }
+
+$db->query("SET time_zone = '+03:00'");
