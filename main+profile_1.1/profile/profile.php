@@ -24,8 +24,8 @@
 <div ng-controller="controller">
 	<div class="profile-container container">
 		<div class="profile-header">
-			<img src="http://klavogonki.ru/storage/avatars/{{data.summary.id}}_big.png" style="height: 60px; width: 60px;">
-			<div class="rang{{data.summary.level}} status{{data.summary.status}} title" style="{{data.summary.style}}"><img class="status-icon" src="{{data.summary.statusIcon}}" />{{data.summary.title}}</div>
+			<img ng-src="http://klavogonki.ru/storage/avatars/{{data.summary.id}}_big.png" style="height: 60px; width: 60px;">
+			<div class="rang{{data.summary.level}} status{{data.summary.status}} title" style="{{data.summary.style}}"><img class="status-icon" ng-if="data.summary.statusIcon" ng-src="{{data.summary.statusIcon}}">{{data.summary.title}}</div>
 			<div class="username"><span class="name" style="font-size: 30px;">{{data.summary.user.login}}</span></div>
 		</div>
 	</div>
