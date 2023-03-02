@@ -73,41 +73,7 @@ switch ($_POST['action']) {
 
         break;
     case 'updateuserstatus':
-        $sql = 'SELECT id FROM status WHERE name = ?';
-        $stmt = $db->prepare($sql);
-
-        if ($stmt === false) {
-            error_log('SQL get status ID prepare error: ' . $db->error);
-            die('SQL get status ID prepare error. See log for details.');
-        }
-
-        $stmt->bind_param('s', $_POST['codename']);
-
-        if (!$stmt->execute()) {
-            error_log('Execute get status ID error: ' . $db->error);
-            die('Execute get status ID error. See log for details.');
-        }
-
-        $result = $stmt->get_result();
-
-        if ($result === false) {
-            error_log('Result get status error: ' . $db->error);
-            die('Result get status error. See log for details.');
-        }
-
-        $result_num = $result->num_rows;
-
-        if ($result_num > 1) {
-            die('Duplicate status name in DB');
-        }
-
-        if ($result_num === 0) {
-            die('There is no such status name in DB');
-        }
-
-        $status_id = $result->fetch_assoc()['id'];
-
-        $sql = 'INSERT INTO `userstatus` (user_id, status_id, since, until) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE status_id = ?, since = ?, until = ?';
+        $sql = 'INSERT INTO `userstatus` (user_id, status_id, since, until) VALUES (?, (SELECT id FROM status WHERE name = ?), ?, ?) ON DUPLICATE KEY UPDATE status_id = VALUES(status_id), since = VALUES(since), until = VALUES(until)';
         $stmt = $db->prepare($sql);
 
         if ($stmt === false) {
@@ -117,7 +83,7 @@ switch ($_POST['action']) {
 
         $since = $_POST['since'] ?: null;
         $until = $_POST['until'] ?: null;
-        $stmt->bind_param('iississ', $_POST['user_id'],$status_id, $since, $until, $status_id, $since, $until);
+        $stmt->bind_param('isss', $_POST['user_id'],$_POST['codename'], $since, $until);
 
         if ($stmt->execute()) {
             echo 'Update user status success';
