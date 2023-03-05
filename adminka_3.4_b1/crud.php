@@ -28,7 +28,8 @@ switch ($_POST['action']) {
             die('SQL updatestatus prepare error. See log for details.');
         }
 
-        $stmt->bind_param('sssssssssss', $_POST['codename'], $_POST['title'], $_POST['color'], $_POST['customCSS'], $_POST['accesses'], $icon, $_POST['title'], $_POST['color'], $_POST['customCSS'], $_POST['accesses'], $icon);
+        $accesses = $_POST['accesses'] ?: null;
+        $stmt->bind_param('sssssssssss', $_POST['codename'], $_POST['title'], $_POST['color'], $_POST['customCSS'], $accesses, $icon, $_POST['title'], $_POST['color'], $_POST['customCSS'], $accesses, $icon);
 
         if ($stmt->execute()) {
             echo 'Update status success';
@@ -143,15 +144,48 @@ switch ($_POST['action']) {
         }
 
         break;
-    case 'viewuseraccesses':
-        $res = $db->query('SELECT * FROM `useraccesses`');
+    case 'viewalluseraccesses':
+        $res = $db->query('SELECT user_id, accesses FROM status AS s, userstatus AS us WHERE us.status_id = s.id AND us.enabled = true AND (since IS NULL OR since<=NOW()) AND (until IS NULL OR NOW()<=until) AND accesses IS NOT NULL');
 
         while ($row = $res->fetch_assoc()) {
             echo json_encode($row, JSON_UNESCAPED_UNICODE) . '<br>';
         }
 
         break;
+    case 'viewuseraccesses':
+        $sql = 'SELECT accesses FROM status AS s, userstatus AS us WHERE us.user_id = ? AND us.status_id = s.id AND us.enabled = true AND (since IS NULL OR since<=NOW()) AND (until IS NULL OR NOW()<=until) AND accesses IS NOT NULL';
+        $stmt = $db->prepare($sql);
+
+        if ($stmt === false) {
+            error_log('SQL viewuseraccesses prepare error: ' . $db->error);
+            die('SQL viewuseraccesses prepare error. See log for details.');
+        }
+
+        $stmt->bind_param('i', $_POST['user_id']);
+
+        if (!$stmt->execute()) {
+            error_log('Execute view user accesses fail: ' . $db->error);
+            die('Execute view user accesses fail. See log for details.');
+        }
+
+        $result = $stmt->get_result();
+
+        if ($result === false) {
+            error_log('Result view user accesses error: ' . $db->error);
+            die('Result view user accesses error. See log for details.');
+        }
+
+        $result_num = $result->num_rows;
+
+        if ($result_num === 0) {
+            echo "User doesn't have accesses";
+        }
+        else {
+            echo 'User accesses: ' . htmlspecialchars($result->fetch_assoc()['accesses']);
+        }
+
+        break;
     default:
-        echo 'Not implemented: ' . $_POST['action'];
+        echo 'Not implemented: ' . htmlspecialchars($_POST['action']);
         break;
 }

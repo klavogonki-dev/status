@@ -15,7 +15,6 @@ $db->query('CREATE DATABASE IF NOT EXISTS kgru');
 $db->query('USE kgru');
 $db->query('DROP TABLE IF EXISTS `userstatus`');
 $db->query('DROP TABLE IF EXISTS `status`');
-$db->query('DROP TABLE IF EXISTS `useraccesses`');
 
 echo 'creating table status: id | name | title | color | customCSS | accesses | icon<br>';
 
@@ -44,7 +43,6 @@ $statuses = array(
 );
 
 $statuses_id = array();
-$accesses = array();
 
 echo 'loading $statuses to table status<br>';
 
@@ -65,10 +63,6 @@ foreach ($statuses as $name => $data) {
     }
 
     $statuses_id[$name] = $db->insert_id;
-
-    if ($data['accesses']) {
-        $accesses[$name] = $data['accesses'];
-    }
 }
 
 echo 'creating table userstatus: id | user_id | status_id | since | until | enabled<br>';
@@ -94,36 +88,15 @@ $user_statuses = array(
     'vip' => array('ids' => array(73879)),
     'personal668817' => array('ids' => array(668817)),
     'personal111001' => array('ids' => array(111001)),
-    'foolsday' => array('ids' => array(111), 'since' => '2023-04-01 00:00:00', 'until' => '2023-04-02 00:00:00')
+    'foolsday' => array('ids' => array(111), 'since' => '2023-04-01 00:00:00', 'until' => '2023-04-01 23:59:59')
 );
 
-echo 'creating table useraccesses: id | user_id | access<br>';
-
-$sql = 'CREATE TABLE `useraccesses` (
-  `id` int(11) KEY AUTO_INCREMENT,
-  `user_id` int(11) UNIQUE DEFAULT 0,
-  `accesses` tinytext DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;'; // TODO: change DB ENGINE / CHARSET if needed
-
-if ($db->query($sql) === false) {
-    error_log('Create table "useraccesses" error: ' . $db->error);
-    die('Create table "useraccesses" error. See log for details.');
-}
-
-echo 'loading $user_statuses to table userstatus and inserting accesses to useraccesses from userstatuses<br>';
+echo 'loading $user_statuses to table userstatus<br>';
 
 $sql = 'INSERT INTO `userstatus` (user_id, status_id, since, until) VALUES (?, ?, ?, ?)';
 $stmt = $db->prepare($sql);
 
 if ($stmt === false) {
-    error_log('SQL prepare error: ' . $db->error);
-    die('SQL prepare error. See log for details.');
-}
-
-$sql_access = 'INSERT INTO `useraccesses` (user_id, accesses) VALUES (?, ?)';
-$stmt_access = $db->prepare($sql_access);
-
-if ($stmt_access === false) {
     error_log('SQL prepare error: ' . $db->error);
     die('SQL prepare error. See log for details.');
 }
@@ -135,15 +108,6 @@ foreach ($user_statuses as $name => $data) {
         if (!$stmt->execute()) {
             error_log('SQL execute error: ' . $db->error);
             die('SQL execute error. See log for details.');
-        }
-
-        if (isset($accesses[$name])) {
-            $stmt_access->bind_param('is', $user_id, $accesses[$name]);
-
-            if (!$stmt_access->execute()) {
-                error_log('SQL execute error: ' . $db->error);
-                die('SQL execute error. See log for details.');
-            }
         }
     }
 }
