@@ -92,11 +92,11 @@ class uinfo
 	
 	public function getStatusDataFromDb()
 	{
-		$sql = "SELECT title, color, customCSS, accesses, icon from status as s, userstatus as us where us.user_id in (?, ?) and us.status_id=s.id and us.enabled=true and (since is null or since<=NOW()) and (until is null or NOW()<=until) order by field (us.user_id, ?, ?) limit 1";
+		$sql = "SELECT title, color, customCSS, accesses, icon from status as s, userstatus as us where us.user_id in (?, ?) and us.status_id=s.id and us.enabled=true and (since is null or since<=NOW()) and (until is null or NOW()<=until) and (levelLink is null or levelLink=?) order by field (us.user_id, ?, ?) limit 1";
 		$all_users_magic_id = 111;	//TODO: maybe it should be set in some kind of config?
 
 		$stmt = $this->db->prepare($sql);
-		$stmt->bind_param("dddd", $this->id, $all_users_magic_id, $this->id, $all_users_magic_id);
+		$stmt->bind_param("iiiii", $this->id, $all_users_magic_id, $this->level, $this->id, $all_users_magic_id);
 		$stmt->execute();
 		$rs = $stmt->get_result();
 		$row = $rs->fetch_assoc();

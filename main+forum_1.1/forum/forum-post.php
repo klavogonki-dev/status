@@ -1,5 +1,5 @@
 <?php
-	include("../../main_1.3.php");
+	include("../../main_1.4.php");
 	$post = (object)[];
 	$post->tier = $user->level;
 	$post->status = $user->status;
