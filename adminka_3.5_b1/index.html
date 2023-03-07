@@ -9,14 +9,29 @@
     <input type="text" name="action" hidden value="viewstatuses">
     <button type="submit">Посмотреть все статусы</button>
 </form>
-<form action="crud.php" method="POST">
+<form action="crud.php" method="POST" enctype="multipart/form-data">
     <input type="text" name="action" hidden value="updatestatus">
     <input type="text" name="codename" placeholder="code name" required>
     <input type="text" name="title" placeholder="отображаемое имя">
     <input type="text" name="color" placeholder="название или код цвета">
     <input type="text" name="customCSS" placeholder="пользовательский CSS">
-    <input  type="text" name="accesses" placeholder="права">
-    <input  type="text" name="icon" placeholder="src иконки">
+    <input type="text" name="accesses" placeholder="права">
+    <label>
+        Ранг:
+        <select name="levelLink">
+            <option value="0">Не задано</option>
+            <option value="1">Новичок</option>
+            <option value="2">Любитель</option>
+            <option value="3">Таксист</option>
+            <option value="4">Профи</option>
+            <option value="5">Гонщик</option>
+            <option value="6">Маньяк</option>
+            <option value="7">Супермен</option>
+            <option value="8">Кибергонщик</option>
+            <option value="9">Экстракибер</option>
+        </select>
+    </label>
+    <label>Иконка: <input type="file" name="icon" accept="image/png"></label>
     <button type="submit">Добавить/изменить статус</button>
 </form>
 <form action="crud.php" method="POST">

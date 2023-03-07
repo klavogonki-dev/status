@@ -13,14 +13,34 @@ switch ($_POST['action']) {
 
         break;
     case 'updatestatus':
-        if ($_POST['icon']) {
-            $icon = 'data:image/png;base64,' . base64_encode(file_get_contents($_POST['icon']));
-        }
-        else {
-            $icon = null;
+        $level_link = (int)$_POST['levelLink'];
+
+        if ($level_link < 0 or $level_link > 9) {
+            die('There is no such rank');
         }
 
-        $sql = 'INSERT INTO `status` (name, title, color, customCSS, accesses, icon) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE title = ?, color = ?, customCSS = ?, accesses = ?, icon = ?';
+        if ($level_link === 0) {
+            $level_link = null;
+        }
+
+        $tmp_name = $_FILES['icon']['tmp_name'];
+
+        if (!$tmp_name) {
+            $icon = null;
+        }
+        else {
+            if (!is_uploaded_file($tmp_name)) {
+                die('Something wrong with uploaded icon');
+            }
+
+            if (strtolower(pathinfo($_FILES['icon']['name'], PATHINFO_EXTENSION)) !== 'png') {
+                die('Icon extension is not png');
+            }
+
+            $icon = 'data:image/png;base64,' . base64_encode(file_get_contents($tmp_name));
+        }
+
+        $sql = 'INSERT INTO `status` (name, title, color, customCSS, accesses, icon, levelLink) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE title = ?, color = ?, customCSS = ?, accesses = ?, icon = ?, levelLink = ?';
         $stmt = $db->prepare($sql);
 
         if ($stmt === false) {
@@ -29,7 +49,7 @@ switch ($_POST['action']) {
         }
 
         $accesses = $_POST['accesses'] ?: null;
-        $stmt->bind_param('sssssssssss', $_POST['codename'], $_POST['title'], $_POST['color'], $_POST['customCSS'], $accesses, $icon, $_POST['title'], $_POST['color'], $_POST['customCSS'], $accesses, $icon);
+        $stmt->bind_param('ssssssisssssi', $_POST['codename'], $_POST['title'], $_POST['color'], $_POST['customCSS'], $accesses, $icon, $level_link, $_POST['title'], $_POST['color'], $_POST['customCSS'], $accesses, $icon, $level_link);
 
         if ($stmt->execute()) {
             echo 'Update status success';

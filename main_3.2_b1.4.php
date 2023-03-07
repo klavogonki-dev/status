@@ -97,10 +97,10 @@ class uinfo
 
     public function getStatusDataFromDb()
     {
-        $sql = 'SELECT title, color, customCSS, accesses, icon FROM status AS s, userstatus AS us WHERE us.user_id IN (?, ?) AND us.status_id = s.id AND us.enabled = true AND (since IS null OR since<=NOW()) AND (until IS null OR NOW()<=until) ORDER BY FIELD(us.user_id, ?, ?) LIMIT 1';
+        $sql = 'SELECT title, color, customCSS, accesses, icon FROM status AS s, userstatus AS us WHERE us.user_id IN (?, ?) AND us.status_id = s.id AND us.enabled = true AND (since IS NULL OR since<=NOW()) AND (until IS NULL OR NOW()<=until) AND (levelLink IS NULL OR levelLink = ?) ORDER BY FIELD(us.user_id, ?, ?) LIMIT 1';
         $stmt = $this->db->prepare($sql);
         $all_users_magic_id = 111;
-        $stmt->bind_param('iiii', $this->id, $all_users_magic_id, $this->id, $all_users_magic_id);
+        $stmt->bind_param('iiiii', $this->id, $all_users_magic_id, $this->level, $this->id, $all_users_magic_id);
         $stmt->execute();
         $rs = $stmt->get_result();
         $row = $rs->fetch_assoc();
